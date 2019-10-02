@@ -216,7 +216,7 @@ class VoyagerServiceProvider extends ServiceProvider
         $components = ['title', 'text', 'button'];
 
         foreach ($components as $component) {
-            $class = 'TCG\\Voyager\\Alert\\Components\\'.ucfirst(camel_case($component)).'Component';
+            $class = 'TCG\\Voyager\\Alert\\Components\\'.ucfirst(\Str::camel($component)).'Component';
 
             $this->app->bind("voyager.alert.components.{$component}", $class);
         }
@@ -331,7 +331,7 @@ class VoyagerServiceProvider extends ServiceProvider
         ];
 
         foreach ($formFields as $formField) {
-            $class = studly_case("{$formField}_handler");
+            $class = \Str::studly("{$formField}_handler");
 
             VoyagerFacade::addFormField("TCG\\Voyager\\FormFields\\{$class}");
         }

@@ -66,7 +66,7 @@ class ControllersCommand extends Command
 
         $appNamespace = app()->getNamespace();
 
-        if (!starts_with($namespace, $appNamespace)) {
+        if (!\Str::startsWith($namespace, $appNamespace)) {
             return $this->error('The controllers namespace must start with your application namespace: '.$appNamespace);
         }
 

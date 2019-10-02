@@ -38,7 +38,7 @@ abstract class AbstractHandler implements HandlerInterface
         if (empty($this->codename)) {
             $name = class_basename($this);
 
-            if (ends_with($name, 'Handler')) {
+            if (\Str::endsWith($name, 'Handler')) {
                 $name = substr($name, 0, -strlen('Handler'));
             }
 

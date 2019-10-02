@@ -73,13 +73,13 @@ class VoyagerController extends Controller
 
     public function assets(Request $request)
     {
-        $path = str_start(str_replace(['../', './'], '', urldecode($request->path)), '/');
+        $path = \Str::start(str_replace(['../', './'], '', urldecode($request->path)), '/');
         $path = base_path('vendor/u01jmg3/voyager/publishable/assets'.$path);
         if (File::exists($path)) {
             $mime = '';
-            if (ends_with($path, '.js')) {
+            if (\Str::endsWith($path, '.js')) {
                 $mime = 'text/javascript';
-            } elseif (ends_with($path, '.css')) {
+            } elseif (\Str::endsWith($path, '.css')) {
                 $mime = 'text/css';
             } else {
                 $mime = File::mimeType($path);
