@@ -121,6 +121,39 @@ class Voyager
 
     public function formField($row, $dataType, $dataTypeContent)
     {
+        if (empty($this->formFields)) {
+            $formFields = [
+                'checkbox',
+                'multiple_checkbox',
+                'color',
+                'date',
+                'file',
+                'image',
+                'multiple_images',
+                'media_picker',
+                'number',
+                'password',
+                'radio_btn',
+                'rich_text_box',
+                'code_editor',
+                'markdown_editor',
+                'select_dropdown',
+                'select_multiple',
+                'text',
+                'text_area',
+                'time',
+                'timestamp',
+                'hidden',
+                'coordinates',
+            ];
+
+            foreach ($formFields as $formField) {
+                $class = \Str::studly("{$formField}_handler");
+
+                self::addFormField("TCG\\Voyager\\FormFields\\{$class}");
+            }
+        }
+
         $formField = $this->formFields[$row->type];
 
         return $formField->handle($row, $dataType, $dataTypeContent);
