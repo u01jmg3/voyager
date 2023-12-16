@@ -17,8 +17,8 @@
              class="avatar"
              style="border-radius:50%; width:150px; height:150px; border:5px solid #fff;"
              alt="{{ Auth::user()->name }} avatar">
-        <h4>{{ ucwords(Auth::user()->name) }}</h4>
-        <div class="user-email text-muted">{{ ucwords(Auth::user()->email) }}</div>
+        <h4>{{ ucwords(Auth::user()->name ?? '') }}</h4>
+        <div class="user-email text-muted">{{ ucwords(Auth::user()->email ?? '') }}</div>
         <p>{{ Auth::user()->bio }}</p>
         @if ($route != '')
             <a href="{{ $route }}" class="btn btn-primary">{{ __('voyager::profile.edit') }}</a>
