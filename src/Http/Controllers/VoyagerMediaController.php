@@ -139,7 +139,7 @@ class VoyagerMediaController extends Controller
         $success = true;
         $error = '';
 
-        foreach ($request->get('files') as $file) {
+        foreach ($request->input('files') as $file) {
             $file_path = $path.$file['name'];
             if ($file['type'] == 'folder') {
                 if (!Storage::disk($this->filesystem)->deleteDirectory($file_path)) {
@@ -170,7 +170,7 @@ class VoyagerMediaController extends Controller
         $success = true;
         $error = '';
 
-        foreach ($request->get('files') as $file) {
+        foreach ($request->input('files') as $file) {
             $old_path = $path.$file['name'];
             $new_path = $dest.$file['name'];
 
@@ -228,7 +228,7 @@ class VoyagerMediaController extends Controller
 
         $extension = $request->file->getClientOriginalExtension();
         $name = Str::replaceLast('.'.$extension, '', $request->file->getClientOriginalName());
-        $details = json_decode($request->get('details') ?? '{}');
+        $details = json_decode($request->input('details') ?? '{}');
         $absolute_path = Storage::disk($this->filesystem)->path($request->upload_path);
 
         try {
@@ -239,12 +239,12 @@ class VoyagerMediaController extends Controller
                 throw new Exception(__('voyager::generic.mimetype_not_allowed'));
             }
 
-            if (!$request->has('filename') || $request->get('filename') == 'null') {
+            if (!$request->has('filename') || $request->input('filename') == 'null') {
                 while (Storage::disk($this->filesystem)->exists(Str::finish($request->upload_path, '/').$name.'.'.$extension, $this->filesystem)) {
                     $name = get_file_name($name);
                 }
             } else {
-                $name = str_replace('{uid}', Auth::user()->getKey(), $request->get('filename'));
+                $name = str_replace('{uid}', Auth::user()->getKey(), $request->input('filename'));
                 if (Str::contains($name, '{date:')) {
                     $name = preg_replace_callback('/\{date:([^\/\}]*)\}/', function ($date) {
                         return \Carbon\Carbon::now()->format($date[1]);
@@ -347,11 +347,11 @@ class VoyagerMediaController extends Controller
         // Check permission
         $this->authorize('browse_media');
 
-        $createMode = $request->get('createMode') === 'true';
-        $x = $request->get('x');
-        $y = $request->get('y');
-        $height = $request->get('height');
-        $width = $request->get('width');
+        $createMode = $request->input('createMode') === 'true';
+        $x = $request->input('x');
+        $y = $request->input('y');
+        $height = $request->input('height');
+        $width = $request->input('width');
 
         $realPath = Storage::disk($this->filesystem)->path('/');
         $originImagePath = $request->upload_path.'/'.$request->originImageName;

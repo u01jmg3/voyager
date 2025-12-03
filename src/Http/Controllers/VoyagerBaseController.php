@@ -45,7 +45,7 @@ class VoyagerBaseController extends Controller
 
         $getter = $dataType->server_side ? 'paginate' : 'get';
 
-        $search = (object) ['value' => $request->get('s'), 'key' => $request->get('key'), 'filter' => $request->get('filter')];
+        $search = (object) ['value' => $request->input('s'), 'key' => $request->input('key'), 'filter' => $request->input('filter')];
 
         $searchNames = [];
         if ($dataType->server_side) {
@@ -54,8 +54,8 @@ class VoyagerBaseController extends Controller
             });
         }
 
-        $orderBy = $request->get('order_by', $dataType->order_column);
-        $sortOrder = $request->get('sort_order', $dataType->order_direction);
+        $orderBy = $request->input('order_by', $dataType->order_column);
+        $sortOrder = $request->input('sort_order', $dataType->order_direction);
         $usesSoftDeletes = false;
         $showSoftDeleted = false;
 
@@ -73,7 +73,7 @@ class VoyagerBaseController extends Controller
             if ($model && in_array(SoftDeletes::class, class_uses_recursive($model)) && Auth::user()->can('delete', app($dataType->model_name))) {
                 $usesSoftDeletes = true;
 
-                if ($request->get('showSoftDeleted')) {
+                if ($request->input('showSoftDeleted')) {
                     $showSoftDeleted = true;
                     $query = $query->withTrashed();
                 }
@@ -494,7 +494,7 @@ class VoyagerBaseController extends Controller
         }
 
         $affected = 0;
-        
+
         foreach ($ids as $id) {
             $data = call_user_func([$dataType->model_name, 'findOrFail'], $id);
 
@@ -577,19 +577,19 @@ class VoyagerBaseController extends Controller
     {
         try {
             // GET THE SLUG, ex. 'posts', 'pages', etc.
-            $slug = $request->get('slug');
+            $slug = $request->input('slug');
 
             // GET file name
-            $filename = $request->get('filename');
+            $filename = $request->input('filename');
 
             // GET record id
-            $id = $request->get('id');
+            $id = $request->input('id');
 
             // GET field name
-            $field = $request->get('field');
+            $field = $request->input('field');
 
             // GET multi value
-            $multi = $request->get('multi');
+            $multi = $request->input('multi');
 
             $dataType = Voyager::model('DataType')->where('slug', '=', $slug)->first();
 
